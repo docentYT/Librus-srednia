@@ -29,7 +29,7 @@ Code -> Download ZIP. Rozpakuj pobrany plik.
 3. Wciśnij "Załaduj rozpakowane" i wybierz folder z rozpakowaną wtyczką.
 
 ## Inne przeglądarki
-Na innych przeglądarkach działających na silniku V8 instalacja powinna być analogiczna.
+Na innych przeglądarkach działających na silniku Chrominium instalacja powinna być analogiczna.
 
 # Łee a czemu nie ma tego do pobrania w sklepach z rozszerzeniami?
 Bo chrome pobiera haracz, a opera wymaga zweryfikowania wtyczki i nie chce mi się przechodzić przez ten proces.
