@@ -28,6 +28,9 @@ Code -> Download ZIP. Rozpakuj pobrany plik.
 2. Włącz tryb dewelopera w prawym górnym rogu.
 3. Wciśnij "Załaduj rozpakowane" i wybierz folder z rozpakowaną wtyczką.
 
+## Firefox
+Wtyczka w firefoxie **obecnie nie działa**.
+
 ## Inne przeglądarki
 Na innych przeglądarkach działających na silniku Chrominium instalacja powinna być analogiczna.
 
