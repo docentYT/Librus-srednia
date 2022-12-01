@@ -17,13 +17,13 @@ Do średniej liczą się tylko oceny oznaczone `Licz do średniej: tak`. Pod uwa
 Wejdź w zakładkę `Issues` i utwórz nowy wątek.
 
 # Instalacja
-Code -> Download ZIP. Rozpakuj pobrany plik.
-## Opera
+Code -> Download ZIP.
+## Opera (`extensions/dist/chrome`)
 1. Wejdź w Rozszerzenia -> Zarządzaj rozszerzeniami.
 2. Włącz tryb programisty w prawym górnym rogu.
 3. Wciśnij "Załaduj rozpakowane" i wybierz folder z rozpakowaną wtyczką.
 
-## Chrome
+## Chrome (`extensions/dist/chrome`)
 1. Wejdź w Rozszerzenia -> Zarządzaj rozszerzeniami.
 2. Włącz tryb dewelopera w prawym górnym rogu.
 3. Wciśnij "Załaduj rozpakowane" i wybierz folder z rozpakowaną wtyczką.

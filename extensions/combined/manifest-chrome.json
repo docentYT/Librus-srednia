@@ -8,7 +8,7 @@
     "content_scripts": [
         {
             "matches": ["*://synergia.librus.pl/przegladaj_oceny/uczen"],
-            "js": ["src/przegladaj_oceny/srednia.js", "src/przegladaj_oceny/collapse_zachowanie.js"]
+            "js": ["przegladaj_oceny.content-script.js"]
         }
     ]
 }
