@@ -18,12 +18,12 @@ Wejdź w zakładkę `Issues` i utwórz nowy wątek.
 
 # Instalacja
 Code -> Download ZIP.
-## Opera (`extensions/dist/chrome`)
+## Opera (`extensions/combined/dist/chrome`)
 1. Wejdź w Rozszerzenia -> Zarządzaj rozszerzeniami.
 2. Włącz tryb programisty w prawym górnym rogu.
 3. Wciśnij "Załaduj rozpakowane" i wybierz folder z rozpakowaną wtyczką.
 
-## Chrome (`extensions/dist/chrome`)
+## Chrome (`extensions/combined/dist/chrome`)
 1. Wejdź w Rozszerzenia -> Zarządzaj rozszerzeniami.
 2. Włącz tryb dewelopera w prawym górnym rogu.
 3. Wciśnij "Załaduj rozpakowane" i wybierz folder z rozpakowaną wtyczką.
