@@ -6,7 +6,7 @@ class Grade {
     };
 };
 
-function parseGradeFromHtmlObject(html) {
+function parseGradeFromHtmlObject(html, plusValue, minusValue) {
     function parseWeight(text) {
         weight = parseInt(text[6]);
         if (isNaN(weight)) return 1;
@@ -17,18 +17,18 @@ function parseGradeFromHtmlObject(html) {
         return text.includes("tak");
     };
 
-    function parseValue(text) {
+    function parseValue(text, plusValue, minusValue) {
         value = parseInt(text);
         if (isNaN(value)) return text;
-        if      (text[1] == '+') value += 0.5;  // grade with '+'
-        else if (text[1] == '-') value -= 0.25; // grade with '-'
+        if      (text[1] == '+') value += plusValue;  // grade with '+'
+        else if (text[1] == '-') value -= minusValue; // grade with '-'
         return value;
     };
 
     title = html.getAttribute("title");
     titleArray = title.split("<br>");
     
-    value = parseValue(html.innerText);
+    value = parseValue(html.innerText, plusValue, minusValue);
     weight = 1;
     countToAverage = false;
     for (const text of titleArray) {
@@ -39,7 +39,7 @@ function parseGradeFromHtmlObject(html) {
 };
 
 
-function gradesTdToList(gradesTd) {
+function gradesTdToList(gradesTd, plusValue, minusValue) {
     list = [];
 
     var grades = gradesTd.getElementsByTagName("span");
@@ -48,7 +48,7 @@ function gradesTdToList(gradesTd) {
         gradeHtmlList = grades[i].getElementsByTagName("a");
         if (!gradeHtmlList || gradeHtmlList.length == 0) return list;
         gradeHtml = gradeHtmlList[0];
-        grade = parseGradeFromHtmlObject(gradeHtml);
+        grade = parseGradeFromHtmlObject(gradeHtml, plusValue, minusValue);
         list.push(grade);
     };
     return list;

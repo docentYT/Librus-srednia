@@ -1,0 +1,21 @@
+<meta charset="UTF-8"/>
+<html>
+    <head>
+        <script type="text/javascript" src="popup.js"></script>
+    </head>
+    <body>
+        <h1>Ustawienia</h1>
+        <form>
+            <label for="plus">Wartość dodawana w przypadku plusa (Domyślnie 0,5)</label>
+            <input type="number" step="0.01" id="plus"><br><br>
+            <label for="minus">Wartość odejmowana w przypadku minusa (Domyślnie 0,25)</label>
+            <input type="number" step="0.01" id="minus"><br><br>
+            <label for="tylkoLiczDoSredniej">Tylko "Licz do średniej: tak" (Domyślnie tak)</label>
+            <input type="checkbox" id="tylkoLiczDoSredniej"><br><br>
+            <label for="schowajZachowanie">Schowaj zachowanie (Domyślnie tak)</label>
+            <input type="checkbox" id="schowajZachowanie"><br><br>
+            <input type="submit" id="submit" value="Zapisz">
+        </form>
+        <span>Po zapisaniu ustawień odśwież stronę</span>
+    </body>
+</html>
