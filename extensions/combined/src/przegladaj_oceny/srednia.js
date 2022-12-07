@@ -62,7 +62,7 @@ function updateAverage(tds, subject) {
     tds[tdsIndexes.averageYear].textContent         = average(subject.gradesFirst.concat(subject.gradesSecond));
 };
 
-function generateSubjectListFromGradesTableBody(tbody, plusValue, minusValue) {
+function generateSubjectListFromGradesTableBody(tbody, plusValue, minusValue, tylkoLiczDoSredniej) {
     let subjectList = [];
     for (const subject of tbody.children) {
         if (subject.hasAttribute("name")) continue;
@@ -70,8 +70,8 @@ function generateSubjectListFromGradesTableBody(tbody, plusValue, minusValue) {
         let subjectName = tds[tdsIndexes.subjectName].textContent;
         if (subjectName.includes("Zachowanie")) continue;
 
-        let gradesFirstList  = Grade.gradesTdToList(tds[tdsIndexes.gradesFirstTerm], plusValue, minusValue);
-        let gradesSecondList = Grade.gradesTdToList(tds[tdsIndexes.gradesSecondTerm], plusValue, minusValue);
+        let gradesFirstList  = Grade.gradesTdToList(tds[tdsIndexes.gradesFirstTerm], plusValue, minusValue, tylkoLiczDoSredniej);
+        let gradesSecondList = Grade.gradesTdToList(tds[tdsIndexes.gradesSecondTerm], plusValue, minusValue, tylkoLiczDoSredniej);
         let subjectObject = new Subject(subjectName, gradesFirstList, gradesSecondList);
         
         updateAverage(tds, subjectObject);
@@ -87,9 +87,11 @@ async function main() {
 
     let plusValue;
     let minusValue;
+    let tylkoLiczDoSredniej
     await chrome.storage.local.get(["plus"]).then((result) => {plusValue = result.plus ?? 0.5});
     await chrome.storage.local.get(["minus"]).then((result) => {minusValue = result.minus ?? 0.25});
-    let subjectList = await generateSubjectListFromGradesTableBody(tbody, plusValue, minusValue);
+    await chrome.storage.local.get(["tylkoLiczDoSredniej"]).then((result) => {tylkoLiczDoSredniej = result.minus ?? true});
+    let subjectList = await generateSubjectListFromGradesTableBody(tbody, plusValue, minusValue, tylkoLiczDoSredniej);
     generateFooter(Utils.getTopLevelChildByTagName(table, "tfoot"), subjectList);
 };
 

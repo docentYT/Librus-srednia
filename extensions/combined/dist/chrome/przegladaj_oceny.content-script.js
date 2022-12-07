@@ -12,15 +12,16 @@ class Grade {
     };
 };
 
-function parseGradeFromHtmlObject(html, plusValue, minusValue) {
+function parseGradeFromHtmlObject(html, plusValue, minusValue, tylkoLiczDoSredniej) {
     function parseWeight(text) {
         weight = parseInt(text[6]);
         if (isNaN(weight)) return 1;
         return weight;
     };
 
-    function parseCountToAverage(text) {
-        return text.includes("tak");
+    function parseCountToAverage(text, tylkoLiczDoSredniej) {
+        if (tylkoLiczDoSredniej) return text.includes("tak");
+        else return true;
     };
 
     function parseValue(text, plusValue, minusValue) {
@@ -39,13 +40,13 @@ function parseGradeFromHtmlObject(html, plusValue, minusValue) {
     countToAverage = false;
     for (const text of titleArray) {
         if      (text.includes("Waga: "))               weight          = parseWeight(text);
-        else if (text.includes("Licz do średniej:"))    countToAverage  = parseCountToAverage(text);
+        else if (text.includes("Licz do średniej:"))    countToAverage  = parseCountToAverage(text, tylkoLiczDoSredniej);
     };
     return new Grade(value, weight, countToAverage);
 };
 
 
-function gradesTdToList(gradesTd, plusValue, minusValue) {
+function gradesTdToList(gradesTd, plusValue, minusValue, tylkoLiczDoSredniej) {
     list = [];
 
     var grades = gradesTd.getElementsByTagName("span");
@@ -54,7 +55,7 @@ function gradesTdToList(gradesTd, plusValue, minusValue) {
         gradeHtmlList = grades[i].getElementsByTagName("a");
         if (!gradeHtmlList || gradeHtmlList.length == 0) return list;
         gradeHtml = gradeHtmlList[0];
-        grade = parseGradeFromHtmlObject(gradeHtml, plusValue, minusValue);
+        grade = parseGradeFromHtmlObject(gradeHtml, plusValue, minusValue, tylkoLiczDoSredniej);
         list.push(grade);
     };
     return list;
@@ -172,7 +173,7 @@ function updateAverage(tds, subject) {
     tds[tdsIndexes.averageYear].textContent         = average(subject.gradesFirst.concat(subject.gradesSecond));
 };
 
-function generateSubjectListFromGradesTableBody(tbody, plusValue, minusValue) {
+function generateSubjectListFromGradesTableBody(tbody, plusValue, minusValue, tylkoLiczDoSredniej) {
     let subjectList = [];
     for (const subject of tbody.children) {
         if (subject.hasAttribute("name")) continue;
@@ -180,8 +181,8 @@ function generateSubjectListFromGradesTableBody(tbody, plusValue, minusValue) {
         let subjectName = tds[tdsIndexes.subjectName].textContent;
         if (subjectName.includes("Zachowanie")) continue;
 
-        let gradesFirstList  = Grade.gradesTdToList(tds[tdsIndexes.gradesFirstTerm], plusValue, minusValue);
-        let gradesSecondList = Grade.gradesTdToList(tds[tdsIndexes.gradesSecondTerm], plusValue, minusValue);
+        let gradesFirstList  = Grade.gradesTdToList(tds[tdsIndexes.gradesFirstTerm], plusValue, minusValue, tylkoLiczDoSredniej);
+        let gradesSecondList = Grade.gradesTdToList(tds[tdsIndexes.gradesSecondTerm], plusValue, minusValue, tylkoLiczDoSredniej);
         let subjectObject = new Subject(subjectName, gradesFirstList, gradesSecondList);
         
         updateAverage(tds, subjectObject);
@@ -197,9 +198,11 @@ async function main() {
 
     let plusValue;
     let minusValue;
+    let tylkoLiczDoSredniej
     await chrome.storage.local.get(["plus"]).then((result) => {plusValue = result.plus ?? 0.5});
     await chrome.storage.local.get(["minus"]).then((result) => {minusValue = result.minus ?? 0.25});
-    let subjectList = await generateSubjectListFromGradesTableBody(tbody, plusValue, minusValue);
+    await chrome.storage.local.get(["tylkoLiczDoSredniej"]).then((result) => {tylkoLiczDoSredniej = result.minus ?? true});
+    let subjectList = await generateSubjectListFromGradesTableBody(tbody, plusValue, minusValue, tylkoLiczDoSredniej);
     generateFooter(Utils.getTopLevelChildByTagName(table, "tfoot"), subjectList);
 };
 

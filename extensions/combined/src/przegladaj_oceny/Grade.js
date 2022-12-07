@@ -6,15 +6,16 @@ class Grade {
     };
 };
 
-function parseGradeFromHtmlObject(html, plusValue, minusValue) {
+function parseGradeFromHtmlObject(html, plusValue, minusValue, tylkoLiczDoSredniej) {
     function parseWeight(text) {
         weight = parseInt(text[6]);
         if (isNaN(weight)) return 1;
         return weight;
     };
 
-    function parseCountToAverage(text) {
-        return text.includes("tak");
+    function parseCountToAverage(text, tylkoLiczDoSredniej) {
+        if (tylkoLiczDoSredniej) return text.includes("tak");
+        else return true;
     };
 
     function parseValue(text, plusValue, minusValue) {
@@ -33,13 +34,13 @@ function parseGradeFromHtmlObject(html, plusValue, minusValue) {
     countToAverage = false;
     for (const text of titleArray) {
         if      (text.includes("Waga: "))               weight          = parseWeight(text);
-        else if (text.includes("Licz do średniej:"))    countToAverage  = parseCountToAverage(text);
+        else if (text.includes("Licz do średniej:"))    countToAverage  = parseCountToAverage(text, tylkoLiczDoSredniej);
     };
     return new Grade(value, weight, countToAverage);
 };
 
 
-function gradesTdToList(gradesTd, plusValue, minusValue) {
+function gradesTdToList(gradesTd, plusValue, minusValue, tylkoLiczDoSredniej) {
     list = [];
 
     var grades = gradesTd.getElementsByTagName("span");
@@ -48,7 +49,7 @@ function gradesTdToList(gradesTd, plusValue, minusValue) {
         gradeHtmlList = grades[i].getElementsByTagName("a");
         if (!gradeHtmlList || gradeHtmlList.length == 0) return list;
         gradeHtml = gradeHtmlList[0];
-        grade = parseGradeFromHtmlObject(gradeHtml, plusValue, minusValue);
+        grade = parseGradeFromHtmlObject(gradeHtml, plusValue, minusValue, tylkoLiczDoSredniej);
         list.push(grade);
     };
     return list;
