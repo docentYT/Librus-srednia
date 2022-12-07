@@ -62,7 +62,7 @@ function updateAverage(tds, subject) {
     tds[tdsIndexes.averageYear].textContent         = average(subject.gradesFirst.concat(subject.gradesSecond));
 };
 
-function generateSubjectListFromGradesTableBody(tbody) {
+function generateSubjectListFromGradesTableBody(tbody, plusValue, minusValue) {
     let subjectList = [];
     for (const subject of tbody.children) {
         if (subject.hasAttribute("name")) continue;
@@ -70,8 +70,8 @@ function generateSubjectListFromGradesTableBody(tbody) {
         let subjectName = tds[tdsIndexes.subjectName].textContent;
         if (subjectName.includes("Zachowanie")) continue;
 
-        let gradesFirstList  = Grade.gradesTdToList(tds[tdsIndexes.gradesFirstTerm]);
-        let gradesSecondList = Grade.gradesTdToList(tds[tdsIndexes.gradesSecondTerm]);
+        let gradesFirstList  = Grade.gradesTdToList(tds[tdsIndexes.gradesFirstTerm], plusValue, minusValue);
+        let gradesSecondList = Grade.gradesTdToList(tds[tdsIndexes.gradesSecondTerm], plusValue, minusValue);
         let subjectObject = new Subject(subjectName, gradesFirstList, gradesSecondList);
         
         updateAverage(tds, subjectObject);
@@ -81,11 +81,15 @@ function generateSubjectListFromGradesTableBody(tbody) {
     return subjectList;
 };
 
-function main() {
+async function main() {
     let table = document.getElementsByClassName("decorated stretch")[1];
     let tbody = Utils.getTopLevelChildByTagName(table, "tbody");
 
-    let subjectList = generateSubjectListFromGradesTableBody(tbody)
+    let plusValue;
+    let minusValue;
+    await chrome.storage.local.get(["plus"]).then((result) => {plusValue = result.plus ?? 0.5});
+    await chrome.storage.local.get(["minus"]).then((result) => {minusValue = result.minus ?? 0.25});
+    let subjectList = await generateSubjectListFromGradesTableBody(tbody, plusValue, minusValue);
     generateFooter(Utils.getTopLevelChildByTagName(table, "tfoot"), subjectList);
 };
 

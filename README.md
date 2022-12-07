@@ -5,13 +5,15 @@ Rozszerzenie do najpopularniejszych przeglądarek dodające możliwość wyświe
 | ------------------------- | --------------------- |
 | ![przed](img/before.png)  | ![po](img/after.png)  |
 
-# Funkcje w wersji 1.0.X
+# Funkcje w wersji 1.1.X
 * Wyświetlanie średniej dla każdego przedmiotu w tabeli z ocenami.
 * Wyświetlanie średniej wszystkich ocen na dole tabeli.
 * Automatyczne zamykanie pola "Zachowanie" w tabeli.
+* Możliwość zmiany parametrów wyliczania średniej w ustawieniach.
 
 # Sposób liczenia średniej
-Do średniej liczą się tylko oceny oznaczone `Licz do średniej: tak`. Pod uwagę jest brana waga. `+` dodaje 0.5 do wartości oceny, a `-` odejmuje 0.25. Oceny niezawierające *normalnej* liczby nie są brane pod uwagę.
+Do średniej domyślnie liczą się tylko oceny oznaczone `Licz do średniej: tak`. Pod uwagę jest brana waga. Domyślnie `+` dodaje 0.5 do wartości oceny, a `-` odejmuje 0.25. Oceny niezawierające *normalnej* liczby nie są brane pod uwagę.
+Parametry liczenia można zmienić w ustawieniach wtyczki (wciskając ikonkę wtyczki).
 
 # Zgłaszanie błędów
 Wejdź w zakładkę `Issues` i utwórz nowy wątek.

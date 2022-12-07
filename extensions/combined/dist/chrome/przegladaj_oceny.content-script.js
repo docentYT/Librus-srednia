@@ -12,7 +12,7 @@ class Grade {
     };
 };
 
-function parseGradeFromHtmlObject(html) {
+function parseGradeFromHtmlObject(html, plusValue, minusValue) {
     function parseWeight(text) {
         weight = parseInt(text[6]);
         if (isNaN(weight)) return 1;
@@ -23,18 +23,18 @@ function parseGradeFromHtmlObject(html) {
         return text.includes("tak");
     };
 
-    function parseValue(text) {
+    function parseValue(text, plusValue, minusValue) {
         value = parseInt(text);
         if (isNaN(value)) return text;
-        if      (text[1] == '+') value += 0.5;  // grade with '+'
-        else if (text[1] == '-') value -= 0.25; // grade with '-'
+        if      (text[1] == '+') value += plusValue;  // grade with '+'
+        else if (text[1] == '-') value -= minusValue; // grade with '-'
         return value;
     };
 
     title = html.getAttribute("title");
     titleArray = title.split("<br>");
     
-    value = parseValue(html.innerText);
+    value = parseValue(html.innerText, plusValue, minusValue);
     weight = 1;
     countToAverage = false;
     for (const text of titleArray) {
@@ -45,7 +45,7 @@ function parseGradeFromHtmlObject(html) {
 };
 
 
-function gradesTdToList(gradesTd) {
+function gradesTdToList(gradesTd, plusValue, minusValue) {
     list = [];
 
     var grades = gradesTd.getElementsByTagName("span");
@@ -54,7 +54,7 @@ function gradesTdToList(gradesTd) {
         gradeHtmlList = grades[i].getElementsByTagName("a");
         if (!gradeHtmlList || gradeHtmlList.length == 0) return list;
         gradeHtml = gradeHtmlList[0];
-        grade = parseGradeFromHtmlObject(gradeHtml);
+        grade = parseGradeFromHtmlObject(gradeHtml, plusValue, minusValue);
         list.push(grade);
     };
     return list;
@@ -95,7 +95,13 @@ module.exports = Subject;
 /***/ 630:
 /***/ (() => {
 
-document.getElementById("przedmioty_zachowanie_node").click();
+async function main() {
+    let schowajZachowanie;
+    await chrome.storage.local.get(["schowajZachowanie"]).then((result) => {schowajZachowanie = result.schowajZachowanie ?? true});
+    if (schowajZachowanie) document.getElementById("przedmioty_zachowanie_node").click();
+};
+
+main();
 
 /***/ }),
 
@@ -166,7 +172,7 @@ function updateAverage(tds, subject) {
     tds[tdsIndexes.averageYear].textContent         = average(subject.gradesFirst.concat(subject.gradesSecond));
 };
 
-function generateSubjectListFromGradesTableBody(tbody) {
+function generateSubjectListFromGradesTableBody(tbody, plusValue, minusValue) {
     let subjectList = [];
     for (const subject of tbody.children) {
         if (subject.hasAttribute("name")) continue;
@@ -174,8 +180,8 @@ function generateSubjectListFromGradesTableBody(tbody) {
         let subjectName = tds[tdsIndexes.subjectName].textContent;
         if (subjectName.includes("Zachowanie")) continue;
 
-        let gradesFirstList  = Grade.gradesTdToList(tds[tdsIndexes.gradesFirstTerm]);
-        let gradesSecondList = Grade.gradesTdToList(tds[tdsIndexes.gradesSecondTerm]);
+        let gradesFirstList  = Grade.gradesTdToList(tds[tdsIndexes.gradesFirstTerm], plusValue, minusValue);
+        let gradesSecondList = Grade.gradesTdToList(tds[tdsIndexes.gradesSecondTerm], plusValue, minusValue);
         let subjectObject = new Subject(subjectName, gradesFirstList, gradesSecondList);
         
         updateAverage(tds, subjectObject);
@@ -185,11 +191,15 @@ function generateSubjectListFromGradesTableBody(tbody) {
     return subjectList;
 };
 
-function main() {
+async function main() {
     let table = document.getElementsByClassName("decorated stretch")[1];
     let tbody = Utils.getTopLevelChildByTagName(table, "tbody");
 
-    let subjectList = generateSubjectListFromGradesTableBody(tbody)
+    let plusValue;
+    let minusValue;
+    await chrome.storage.local.get(["plus"]).then((result) => {plusValue = result.plus ?? 0.5});
+    await chrome.storage.local.get(["minus"]).then((result) => {minusValue = result.minus ?? 0.25});
+    let subjectList = await generateSubjectListFromGradesTableBody(tbody, plusValue, minusValue);
     generateFooter(Utils.getTopLevelChildByTagName(table, "tfoot"), subjectList);
 };
 
