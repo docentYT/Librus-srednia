@@ -2,13 +2,31 @@ const Grade = require("./Grade");
 const Subject = require("./Subject");
 const Utils = require("./utils");
 
-const tdsIndexes = {
-    "subjectName": 1,
-    "gradesFirstTerm": 2,
-    "averageFirstTerm": 3,
-    "gradesSecondTerm": 5,
-    "averageSecondTerm": 6,
-    "averageYear": 8
+var tdsIndexes;
+function generateTdsIndexes(firstRowLength) {
+    if (firstRowLength == 10) {
+        tdsIndexes = {
+            "tableRowLength": firstRowLength,
+            "subjectName": 1,
+            "gradesFirstTerm": 2,
+            "averageFirstTerm": 3,
+            "gradesSecondTerm": 5,
+            "averageSecondTerm": 6,
+            "averageYear": 8
+        };
+    } else if (firstRowLength == 11) {
+        tdsIndexes = {
+            "tableRowLength": firstRowLength,
+            "subjectName": 1,
+            "gradesFirstTerm": 2,
+            "averageFirstTerm": 3,
+            "gradesSecondTerm": 6,
+            "averageSecondTerm": 7,
+            "averageYear": 9
+        };
+    } else {
+        console.log("Librus Średnia: Ilość kolumn w tabeli z ocenami:", firstRowLength, " proszę zgłosić do developera.")
+    }
 };
 
 function average(gradesList) {
@@ -49,7 +67,8 @@ function generateFooter(tfoot, subjects) {
     tr.appendChild(createTd(1)); // Spacing
 
     createTdWithAverageFromGradesList(gradesFirst);
-    tr.appendChild(createTd(2)); // Spacing
+    if (tdsIndexes.tableRowLength == 10) tr.appendChild(createTd(2));   // Spacing
+    else tr.appendChild(createTd(3));                                   // Spacing
     createTdWithAverageFromGradesList(gradesSecond);
     tr.appendChild(createTd(1)); // Spacing
     createTdWithAverageFromGradesList(gradesFirst.concat(gradesSecond));
@@ -84,6 +103,8 @@ function generateSubjectListFromGradesTableBody(tbody, plusValue, minusValue, ty
 async function main() {
     let table = document.getElementsByClassName("decorated stretch")[1];
     let tbody = Utils.getTopLevelChildByTagName(table, "tbody");
+
+    generateTdsIndexes(tbody.children[0].children.length);
 
     let plusValue;
     let minusValue;
