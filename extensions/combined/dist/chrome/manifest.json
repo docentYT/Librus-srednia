@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Librus Średnia",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "description": "Wtyczka wyświetlająca średnią ocen dla każdego przedmiotu, mimo że ta funkcja została wyłączona przez administratora szkoły.",
     "author": "Krzysztof Kwiatkowski",
 
