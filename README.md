@@ -5,9 +5,10 @@ Rozszerzenie do najpopularniejszych przeglądarek dodające możliwość wyświe
 | ------------------------- | --------------------- |
 | ![przed](img/before.png)  | ![po](img/after.png)  |
 
-# Funkcje w wersji 1.1.X
+# Funkcje w wersji 1.2.X
 * Wyświetlanie średniej dla każdego przedmiotu w tabeli z ocenami.
 * Wyświetlanie średniej wszystkich ocen na dole tabeli.
+* Wyświetlanie średniej ocen semestralnych, końcoworocznych i przewidywanych semestralnych (obecnie tylko pierwszy semestr).
 * Automatyczne zamykanie pola "Zachowanie" w tabeli.
 * Możliwość zmiany parametrów wyliczania średniej w ustawieniach.
 
