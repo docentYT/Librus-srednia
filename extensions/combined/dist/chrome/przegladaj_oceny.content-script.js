@@ -158,7 +158,9 @@ function average(gradesList) {
             counter += grade.weight;
         };
     };
-    return (sum/counter).toFixed(2);
+    let temp_average = (sum/counter).toFixed(2);
+    if (isNaN(temp_average))    return (0).toFixed(2);
+    else                        return temp_average;
 };
 
 function generateFooter(tfoot, subjects, annuals) {
