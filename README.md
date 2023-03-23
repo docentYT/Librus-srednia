@@ -21,15 +21,15 @@ Wejdź w zakładkę `Issues` i utwórz nowy wątek.
 
 # Instalacja
 Code -> Download ZIP.
-## Opera (`extensions/combined/dist/chrome`)
+## Opera
 1. Wejdź w Rozszerzenia -> Zarządzaj rozszerzeniami.
 2. Włącz tryb programisty w prawym górnym rogu.
-3. Wciśnij "Załaduj rozpakowane" i wybierz folder z rozpakowaną wtyczką.
+3. Wciśnij "Załaduj rozpakowane" i wybierz folder `extensions/combined/dist/chrome`, gdzie znajduje się rozpakowana wtyczka.
 
-## Chrome (`extensions/combined/dist/chrome`)
+## Chrome
 1. Wejdź w Rozszerzenia -> Zarządzaj rozszerzeniami.
 2. Włącz tryb dewelopera w prawym górnym rogu.
-3. Wciśnij "Załaduj rozpakowane" i wybierz folder z rozpakowaną wtyczką.
+3. Wciśnij "Załaduj rozpakowane" i wybierz folder `extensions/combined/dist/chrome`, gdzie znajduje się rozpakowana wtyczka.
 
 ## Firefox
 Wtyczka w firefoxie **obecnie nie działa**.
