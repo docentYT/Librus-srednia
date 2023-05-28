@@ -31,6 +31,38 @@ function generateTdsIndexes(firstRowLength) {
             "averageYear": 9,
             "annualYear": 10
         };
+    } else if (firstRowLength == 12) {
+        tdsIndexes = {
+            "tableRowLength": firstRowLength,
+            "subjectName": 1,
+            "gradesFirstTerm": 2,
+            "averageFirstTerm": 3,
+            "annualFirstPredirect": 4,
+            "annualFirst": 5,
+            "gradesSecondTerm": 6,
+            "averageSecondTerm": 7,
+            "annualSecond": 8,
+            "averageYear": 9,
+            "annualYearPredirect": 10,
+            "annualYear": 11
+        };
+    }
+    else if (firstRowLength == 13) {
+        tdsIndexes = {
+            "tableRowLength": firstRowLength,
+            "subjectName": 1,
+            "gradesFirstTerm": 2,
+            "averageFirstTerm": 3,
+            "annualFirstPredirect": 4,
+            "annualFirst": 5,
+            "gradesSecondTerm": 6,
+            "averageSecondTerm": 7,
+            "annualSecondPredirect": 8,
+            "annualSecond": 9,
+            "averageYear": 10,
+            "annualYearPredirect": 11,
+            "annualYear": 12
+        };
     } else {
         console.log("Librus Średnia: Ilość kolumn w tabeli z ocenami:", firstRowLength, " proszę zgłosić do developera.")
     }
@@ -77,7 +109,7 @@ function generateFooter(tfoot, subjects, annuals) {
 
     createTdWithAverageFromGradesList(gradesFirst);
     
-    if (tdsIndexes.tableRowLength == 11) {
+    if (tdsIndexes.tableRowLength == 11 || tdsIndexes.tableRowLength == 12) {
       let annualFirstPredirect = createTd(1);
       annualFirstPredirect.innerText = annuals["annualFirstPredirect"];
       tr.appendChild(annualFirstPredirect);
@@ -90,12 +122,22 @@ function generateFooter(tfoot, subjects, annuals) {
     tr.appendChild(createTd(1));  // Spacing
     createTdWithAverageFromGradesList(gradesSecond);
     
+    if (tdsIndexes.tableRowLength == 13) {
+        let annualPredirectSecond = createTd(1);
+        annualPredirectSecond.innerText = annuals["annualPredirectSecond"];
+        tr.appendChild(annualPredirectSecond);
+    }
+
     let annualSecond = createTd(1);
     annualSecond.innerText = annuals["annualSecond"];
     tr.appendChild(annualSecond);
 
     createTdWithAverageFromGradesList(gradesFirst.concat(gradesSecond));
     
+    let annualYearPredirect = createTd(1);
+    annualYearPredirect.innerText = annuals["annualYearPredirect"];
+    tr.appendChild(annualYearPredirect);
+
     let annualYear = createTd(1);
     annualYear.innerText = annuals["annualYear"];
     tr.appendChild(annualYear);
@@ -112,6 +154,7 @@ function generateSubjectListFromGradesTableBody(tbody, plusValue, minusValue, ty
     for (const subject of tbody.children) {
         if (subject.hasAttribute("name")) continue;
         let tds = subject.getElementsByTagName("td");
+        console.log(tds);
         let subjectName = tds[tdsIndexes.subjectName].textContent;
         if (subjectName.includes("Zachowanie")) continue;
 
@@ -143,8 +186,12 @@ function annualAssements(tbody) {
     let annualFirstPredirectSum = 0;
     let annualFirstCounter = 0;
     let annualFirstSum = 0;
+    let annualSecondPredirectCounter = 0;
+    let annualSecondPredirectSum = 0;
     let annualSecondCounter = 0;
     let annualSecondSum = 0;
+    let annualYearPredirectCounter = 0;
+    let annualYearPredirectSum = 0;
     let annualYearCounter = 0;
     let annualYearSum = 0;
     for (const subject of tbody.children) {
@@ -155,7 +202,9 @@ function annualAssements(tbody) {
 
         let annualFirstPredirectGrade = parseAnnual(tds, tdsIndexes.annualFirstPredirect);
         let annualFirstGrade = parseAnnual(tds, tdsIndexes.annualFirst);
+        let annualSecondPredirectGrade = parseAnnual(tds, tdsIndexes.annualSecondPredirect);
         let annualSecondGrade = parseAnnual(tds, tdsIndexes.annualSecond);
+        let annualYearPredirectGrade = parseAnnual(tds, tdsIndexes.annualYearPredirect);
         let annualYearGrade = parseAnnual(tds, tdsIndexes.annualYear);
         if (annualFirstPredirectGrade) {
             annualFirstPredirectCounter++;
@@ -165,9 +214,17 @@ function annualAssements(tbody) {
             annualFirstCounter++;
             annualFirstSum += annualFirstGrade;
         }
+        if (annualSecondPredirectGrade) {
+            annualSecondPredirectCounter++;
+            annualSecondPredirectSum += annualSecondPredirectGrade;
+        }
         if (annualSecondGrade) {
             annualSecondCounter++;
-            annualSecondSum += annualSecondSum;
+            annualSecondSum += annualSecondGrade;
+        }
+        if (annualYearPredirectGrade) {
+            annualYearPredirectCounter++;
+            annualYearPredirectSum += annualYearPredirectGrade;
         }
         if (annualYearGrade) {
             annualYearCounter++;
@@ -176,7 +233,9 @@ function annualAssements(tbody) {
     }
     annuals["annualFirstPredirect"] = (annualFirstPredirectSum / annualFirstPredirectCounter).toFixed(2);
     annuals["annualFirst"] = (annualFirstSum / annualFirstCounter).toFixed(2);
+    annuals["annualSecondPredirect"] = (annualSecondPredirectSum / annualSecondPredirectCounter).toFixed(2);
     annuals["annualSecond"] = (annualSecondSum / annualSecondCounter).toFixed(2);
+    annuals["annualYearPredirect"] = (annualYearPredirectSum / annualYearPredirectCounter).toFixed(2);
     annuals["annualYear"] = (annualYearSum / annualYearCounter).toFixed(2);
 
     if (isNaN(annuals["annualFirstPredirect"])) annuals["annualFirstPredirect"] = (0).toFixed(2);
