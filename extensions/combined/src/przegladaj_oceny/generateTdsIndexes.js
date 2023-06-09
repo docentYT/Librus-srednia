@@ -1,5 +1,5 @@
 "use strict";
-const Utils = require("./utils");
+const Utils = require("../../utils");
 
 var wasGrades = false;
 function grades() {

@@ -106,7 +106,7 @@ main();
 
 /***/ }),
 
-/***/ 931:
+/***/ 36:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -115,7 +115,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "generateTdsIndexes": () => (/* binding */ generateTdsIndexes)
 /* harmony export */ });
 
-const Utils = __webpack_require__(947);
+const Utils = __webpack_require__(394);
 
 var wasGrades = false;
 function grades() {
@@ -181,8 +181,8 @@ function generateTdsIndexes(table) {
 
 const Grade = __webpack_require__(370);
 const Subject = __webpack_require__(409);
-const Utils = __webpack_require__(947);
-const GenerateTdsIndexes = __webpack_require__(931);
+const Utils = __webpack_require__(394);
+const GenerateTdsIndexes = __webpack_require__(36);
 
 var tdsIndexes;
 
@@ -361,7 +361,7 @@ main();
 
 /***/ }),
 
-/***/ 947:
+/***/ 394:
 /***/ ((module) => {
 
 function getTopLevelChildByTagName(element, tagName) {

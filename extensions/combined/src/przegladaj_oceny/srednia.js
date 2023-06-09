@@ -1,7 +1,7 @@
 "use strict";
 const Grade = require("./Grade");
 const Subject = require("./Subject");
-const Utils = require("./utils");
+const Utils = require("../../utils");
 const GenerateTdsIndexes = require("./generateTdsIndexes");
 
 var tdsIndexes;
