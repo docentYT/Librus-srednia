@@ -1,152 +1,66 @@
+"use strict";
 const Grade = require("./Grade");
 const Subject = require("./Subject");
 const Utils = require("./utils");
+const GenerateTdsIndexes = require("./generateTdsIndexes");
 
 var tdsIndexes;
-function generateTdsIndexes(firstRowLength) {
-    if (firstRowLength == 10) {
-        tdsIndexes = {
-            "tableRowLength": firstRowLength,
-            "subjectName": 1,
-            "gradesFirstTerm": 2,
-            "averageFirstTerm": 3,
-            "annualFirst": 4,
-            "gradesSecondTerm": 5,
-            "averageSecondTerm": 6,
-            "annualSecond": 7,
-            "averageYear": 8,
-            "annualYear": 9,
-        };
-    } else if (firstRowLength == 11) {
-        tdsIndexes = {
-            "tableRowLength": firstRowLength,
-            "subjectName": 1,
-            "gradesFirstTerm": 2,
-            "averageFirstTerm": 3,
-            "annualFirstPredirect": 4,
-            "annualFirst": 5,
-            "gradesSecondTerm": 6,
-            "averageSecondTerm": 7,
-            "annualSecond": 8,
-            "averageYear": 9,
-            "annualYear": 10
-        };
-    } else if (firstRowLength == 12) {
-        tdsIndexes = {
-            "tableRowLength": firstRowLength,
-            "subjectName": 1,
-            "gradesFirstTerm": 2,
-            "averageFirstTerm": 3,
-            "annualFirstPredirect": 4,
-            "annualFirst": 5,
-            "gradesSecondTerm": 6,
-            "averageSecondTerm": 7,
-            "annualSecond": 8,
-            "averageYear": 9,
-            "annualYearPredirect": 10,
-            "annualYear": 11
-        };
-    }
-    else if (firstRowLength == 13) {
-        tdsIndexes = {
-            "tableRowLength": firstRowLength,
-            "subjectName": 1,
-            "gradesFirstTerm": 2,
-            "averageFirstTerm": 3,
-            "annualFirstPredirect": 4,
-            "annualFirst": 5,
-            "gradesSecondTerm": 6,
-            "averageSecondTerm": 7,
-            "annualSecondPredirect": 8,
-            "annualSecond": 9,
-            "averageYear": 10,
-            "annualYearPredirect": 11,
-            "annualYear": 12
-        };
-    } else {
-        console.log("Librus Średnia: Ilość kolumn w tabeli z ocenami:", firstRowLength, " proszę zgłosić do developera.")
-    }
-};
 
 function average(gradesList) {
     let sum = 0;
     let counter = 0;
     if (gradesList.length == 0) return (0).toFixed(2);
-    for (let i = 0; i < gradesList.length; i++) {
-        let grade = gradesList[i];
+    for (const grade of gradesList) {
         if (grade.countToAverage && !isNaN(grade.value)) {
             sum += (grade.value * grade.weight);
             counter += grade.weight;
-        };
-    };
-    let temp_average = (sum/counter).toFixed(2);
-    if (isNaN(temp_average))    return (0).toFixed(2);
-    else                        return temp_average;
+        }
+    }
+    return (sum/counter).toFixed(2);
 };
 
 function generateFooter(tfoot, subjects, annuals) {
-    function createTd(colspan) {
+    function generateTd(innerText, title) {
         let td = document.createElement("td");
-        td.setAttribute("colspan", colspan);
-        return td;
-    };
+        td.setAttribute("colspan", 1);
+        if (title) td.setAttribute("title", title);
+        td.innerText = innerText || null;
+        tr.appendChild(td);
+    }
     var tr = Utils.getTopLevelChildByTagName(tfoot, "tr");
     Utils.getTopLevelChildByTagName(tr, "td").remove();
 
-    function createTdWithAverageFromGradesList(gradesList) {
-        let td = createTd(1);
-        td.textContent = average(gradesList);
-        tr.appendChild(td);
-    };
-
     const {gradesFirst, gradesSecond} = Grade.gradesFromSubjects(subjects);
 
-    tr.appendChild(createTd(1)); // Spacing
-    let totalAverageName = createTd(1);
-    totalAverageName.innerText = "Średnie";
-    tr.appendChild(totalAverageName);
-    tr.appendChild(createTd(1)); // Spacing
+    generateTd(); // Spacing
+    generateTd("Średnie", "Średnie wyliczone dzięki wtyczce Librus Średnia wykonanej przez https://docentcompany.com");
 
-    createTdWithAverageFromGradesList(gradesFirst);
-    
-    if (tdsIndexes.tableRowLength == 11 || tdsIndexes.tableRowLength == 12) {
-      let annualFirstPredirect = createTd(1);
-      annualFirstPredirect.innerText = annuals["annualFirstPredirect"];
-      tr.appendChild(annualFirstPredirect);
-    };
+    if (tdsIndexes.hasOwnProperty("gradesFirstTerm"))       generateTd();
+    if (tdsIndexes.hasOwnProperty("averageFirstTerm"))      generateTd(average(gradesFirst), "Średnia ocen z pierwszego semestu ze wszystkich przedmiotów.");
+    if (tdsIndexes.hasOwnProperty("annualFirstPredirect"))  generateTd(annuals["annualFirstPredirect"], "Średnia ocen przewidywanych na pierwszy semestr.");
+    if (tdsIndexes.hasOwnProperty("annualFirst"))           generateTd(annuals["annualFirst"], "Średnia ocen śródrocznych na pierwszy semestr.");
 
-    let annualFirst = createTd(1);
-    annualFirst.innerText = annuals["annualFirst"];
-    tr.appendChild(annualFirst);
+    if (tdsIndexes.hasOwnProperty("gradesSecondTerm"))      generateTd();
+    if (tdsIndexes.hasOwnProperty("averageSecondTerm"))     generateTd(average(gradesSecond), "Średnia ocen z drugiego semestu ze wszystkich przedmiotów.");
+    if (tdsIndexes.hasOwnProperty("annualSecondPredirect")) generateTd(annuals["annualSecondPredirect"], "Średnia ocen przewidywanych na drugi semestr.");
+    if (tdsIndexes.hasOwnProperty("annualSecond"))          generateTd(annuals["annualSecond"], "Średnia ocen śródrocznych na drugi semestr.");
 
-    tr.appendChild(createTd(1));  // Spacing
-    createTdWithAverageFromGradesList(gradesSecond);
-    
-    if (tdsIndexes.tableRowLength == 13) {
-        let annualPredirectSecond = createTd(1);
-        annualPredirectSecond.innerText = annuals["annualPredirectSecond"];
-        tr.appendChild(annualPredirectSecond);
-    }
-
-    let annualSecond = createTd(1);
-    annualSecond.innerText = annuals["annualSecond"];
-    tr.appendChild(annualSecond);
-
-    createTdWithAverageFromGradesList(gradesFirst.concat(gradesSecond));
-    
-    let annualYearPredirect = createTd(1);
-    annualYearPredirect.innerText = annuals["annualYearPredirect"];
-    tr.appendChild(annualYearPredirect);
-
-    let annualYear = createTd(1);
-    annualYear.innerText = annuals["annualYear"];
-    tr.appendChild(annualYear);
+    if (tdsIndexes.hasOwnProperty("averageYear"))           generateTd(average(gradesFirst.concat(gradesSecond)), "Średnia ocen z pierwszego i drugiego semestu łącznie ze wszystkich przedmiotów.");
+    if (tdsIndexes.hasOwnProperty("annualYearPredirect"))   generateTd(annuals["annualYearPredirect"], "Średnia ocen przewidywanych na koniec roku.");
+    if (tdsIndexes.hasOwnProperty("annualYear"))            generateTd(annuals["annualYear"], "Średnia ocen rocznych.");
 };
 
 function updateAverage(tds, subject) {
-    tds[tdsIndexes.averageFirstTerm].textContent    = average(subject.gradesFirst);
-    tds[tdsIndexes.averageSecondTerm].textContent   = average(subject.gradesSecond);
-    tds[tdsIndexes.averageYear].textContent         = average(subject.gradesFirst.concat(subject.gradesSecond));
+    function updadeAverageForAnnual(tdsIndexKey, grades, title) {
+        if (!tdsIndexes.hasOwnProperty(tdsIndexKey)) return;
+        const td = tds[tdsIndexes[tdsIndexKey]];
+        td.textContent = average(grades);
+        td.setAttribute("title", title);
+        td.setAttribute("class", "center");
+    }
+    updadeAverageForAnnual("averageFirstTerm", subject.gradesFirst, "Średnia ocen z pierwszego semestu z jednego przedmiotu.");
+    updadeAverageForAnnual("averageSecondTerm", subject.gradesSecond, "Średnia ocen z drugiego semestu z jednego przedmiotu.");
+    updadeAverageForAnnual("averageYear", subject.gradesFirst.concat(subject.gradesSecond), "Średnia ocen z pierwszego i drugiego semesteru łącznie z jednego przedmiotu.");
 };
 
 function generateSubjectListFromGradesTableBody(tbody, plusValue, minusValue, tylkoLiczDoSredniej) {
@@ -154,7 +68,6 @@ function generateSubjectListFromGradesTableBody(tbody, plusValue, minusValue, ty
     for (const subject of tbody.children) {
         if (subject.hasAttribute("name")) continue;
         let tds = subject.getElementsByTagName("td");
-        console.log(tds);
         let subjectName = tds[tdsIndexes.subjectName].textContent;
         if (subjectName.includes("Zachowanie")) continue;
 
@@ -250,14 +163,15 @@ async function main() {
     let table = document.getElementsByClassName("decorated stretch")[1];
     let tbody = Utils.getTopLevelChildByTagName(table, "tbody");
 
-    generateTdsIndexes(tbody.children[0].children.length);
+    tdsIndexes = GenerateTdsIndexes.generateTdsIndexes(table);
 
     let plusValue;
     let minusValue;
     let tylkoLiczDoSredniej;
-    await chrome.storage.local.get(["plus"]).then((result) => {plusValue = result.plus ?? 0.5});
-    await chrome.storage.local.get(["minus"]).then((result) => {minusValue = result.minus ?? 0.25});
-    await chrome.storage.local.get(["tylkoLiczDoSredniej"]).then((result) => {tylkoLiczDoSredniej = result.minus ?? true});
+
+    await chrome.storage.sync.get(["plus"]).then((result) => {plusValue = result.plus ?? 0.5});
+    await chrome.storage.sync.get(["minus"]).then((result) => {minusValue = result.minus ?? 0.25});
+    await chrome.storage.sync.get(["tylkoLiczDoSredniej"]).then((result) => {tylkoLiczDoSredniej = result.minus ?? true});
     let subjectList = await generateSubjectListFromGradesTableBody(tbody, plusValue, minusValue, tylkoLiczDoSredniej);
     let annuals = annualAssements(tbody);
     generateFooter(Utils.getTopLevelChildByTagName(table, "tfoot"), subjectList, annuals);

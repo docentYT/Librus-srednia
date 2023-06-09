@@ -45,8 +45,8 @@ function gradesTdToList(gradesTd, plusValue, minusValue, tylkoLiczDoSredniej) {
 
     var grades = gradesTd.getElementsByTagName("span");
     if (!grades || grades.length == 0) return list;
-    for (var i = 0; i < grades.length; i++) {
-        gradeHtmlList = grades[i].getElementsByTagName("a");
+    for (let grade of grades) {
+        gradeHtmlList = grade.getElementsByTagName("a");
         if (!gradeHtmlList || gradeHtmlList.length == 0) return list;
         gradeHtml = gradeHtmlList[0];
         grade = parseGradeFromHtmlObject(gradeHtml, plusValue, minusValue, tylkoLiczDoSredniej);

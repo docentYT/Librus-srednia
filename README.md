@@ -5,12 +5,15 @@ Rozszerzenie do najpopularniejszych przeglądarek dodające możliwość wyświe
 | ------------------------- | --------------------- |
 | ![przed](img/before.png)  | ![po](img/after.png)  |
 
-# Funkcje w wersji 1.2.X
+# Funkcje w wersji 2.0.X
 * Wyświetlanie średniej dla każdego przedmiotu w tabeli z ocenami.
 * Wyświetlanie średniej wszystkich ocen na dole tabeli.
-* Wyświetlanie średniej ocen semestralnych, końcoworocznych i przewidywanych semestralnych (obecnie tylko pierwszy semestr).
+* Wyświetlanie średniej ocen śródrocznych i rocznych.
+* Wyświetlanie średniej przewidywanych ocen śródrocznych i rocznych.
 * Automatyczne zamykanie pola "Zachowanie" w tabeli.
 * Możliwość zmiany parametrów wyliczania średniej w ustawieniach.
+* Inteligentne dostosowywanie ilości kolumn w tabeli.
+* Synchronizowanie ustawień między przeglądarkami, gdy użytkownik jest do niej zalogowany (jeśli przeglądarka wspiera synchronizację).
 
 # Sposób liczenia średniej
 Do średniej domyślnie liczą się tylko oceny oznaczone `Licz do średniej: tak`. Pod uwagę jest brana waga. Domyślnie `+` dodaje 0.5 do wartości oceny, a `-` odejmuje 0.25. Oceny niezawierające *normalnej* liczby nie są brane pod uwagę.
