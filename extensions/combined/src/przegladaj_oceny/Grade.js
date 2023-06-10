@@ -40,18 +40,24 @@ function parseGradeFromHtmlObject(html, plusValue, minusValue, tylkoLiczDoSredni
 };
 
 
-function gradesTdToList(gradesTd, plusValue, minusValue, tylkoLiczDoSredniej) {
+function gradesTdToList(gradesTd, plusValue, minusValue, tylkoLiczDoSredniej, ignoreCorrectedGrades) {
     list = [];
 
-    var grades = gradesTd.getElementsByTagName("span");
-    if (!grades || grades.length == 0) return list;
-    for (let grade of grades) {
-        gradeHtmlList = grade.getElementsByTagName("a");
-        if (!gradeHtmlList || gradeHtmlList.length == 0) return list;
-        gradeHtml = gradeHtmlList[0];
-        grade = parseGradeFromHtmlObject(gradeHtml, plusValue, minusValue, tylkoLiczDoSredniej);
-        list.push(grade);
-    };
+    let grades = gradesTd.children;
+    for (const gradeGroup of grades) {
+        const gradesInGradeGroup = gradeGroup.children;
+        if (gradesInGradeGroup[0].tagName == "SPAN") {
+            if (ignoreCorrectedGrades) list.push(parseGradeFromHtmlObject(gradesInGradeGroup[gradesInGradeGroup.length-1].getElementsByTagName("a")[0]));
+            else {
+                for (const grade of gradesInGradeGroup) {
+                    list.push(parseGradeFromHtmlObject(grade.getElementsByTagName("a")[0], plusValue, minusValue, tylkoLiczDoSredniej));
+                }
+            }
+        }
+        else {
+            list.push(parseGradeFromHtmlObject(gradesInGradeGroup[0], plusValue, minusValue, tylkoLiczDoSredniej));
+        }
+    }
     return list;
 }
 

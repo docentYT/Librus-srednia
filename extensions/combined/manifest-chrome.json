@@ -4,6 +4,12 @@
     "version": "2.0.0",
     "description": "Wtyczka wyświetlająca średnią ocen dla każdego przedmiotu, mimo że ta funkcja została wyłączona przez administratora szkoły.",
     "author": "Krzysztof Kwiatkowski",
+    "icons": {
+        "16": "icon/16.png",
+        "32": "icon/32.png",
+        "48": "icon/48.png",
+        "128": "icon/128.png"
+      },
 
     "permissions": [
         "storage"

@@ -46,18 +46,24 @@ function parseGradeFromHtmlObject(html, plusValue, minusValue, tylkoLiczDoSredni
 };
 
 
-function gradesTdToList(gradesTd, plusValue, minusValue, tylkoLiczDoSredniej) {
+function gradesTdToList(gradesTd, plusValue, minusValue, tylkoLiczDoSredniej, ignoreCorrectedGrades) {
     list = [];
 
-    var grades = gradesTd.getElementsByTagName("span");
-    if (!grades || grades.length == 0) return list;
-    for (let grade of grades) {
-        gradeHtmlList = grade.getElementsByTagName("a");
-        if (!gradeHtmlList || gradeHtmlList.length == 0) return list;
-        gradeHtml = gradeHtmlList[0];
-        grade = parseGradeFromHtmlObject(gradeHtml, plusValue, minusValue, tylkoLiczDoSredniej);
-        list.push(grade);
-    };
+    let grades = gradesTd.children;
+    for (const gradeGroup of grades) {
+        const gradesInGradeGroup = gradeGroup.children;
+        if (gradesInGradeGroup[0].tagName == "SPAN") {
+            if (ignoreCorrectedGrades) list.push(parseGradeFromHtmlObject(gradesInGradeGroup[gradesInGradeGroup.length-1].getElementsByTagName("a")[0]));
+            else {
+                for (const grade of gradesInGradeGroup) {
+                    list.push(parseGradeFromHtmlObject(grade.getElementsByTagName("a")[0], plusValue, minusValue, tylkoLiczDoSredniej));
+                }
+            }
+        }
+        else {
+            list.push(parseGradeFromHtmlObject(gradesInGradeGroup[0], plusValue, minusValue, tylkoLiczDoSredniej));
+        }
+    }
     return list;
 }
 
@@ -243,7 +249,7 @@ function updateAverage(tds, subject) {
     updadeAverageForAnnual("averageYear", subject.gradesFirst.concat(subject.gradesSecond), "Średnia ocen z pierwszego i drugiego semesteru łącznie z jednego przedmiotu.");
 };
 
-function generateSubjectListFromGradesTableBody(tbody, plusValue, minusValue, tylkoLiczDoSredniej) {
+function generateSubjectListFromGradesTableBody(tbody, plusValue, minusValue, tylkoLiczDoSredniej, ignoreCorrectedGrades) {
     let subjectList = [];
     for (const subject of tbody.children) {
         if (subject.hasAttribute("name")) continue;
@@ -251,8 +257,8 @@ function generateSubjectListFromGradesTableBody(tbody, plusValue, minusValue, ty
         let subjectName = tds[tdsIndexes.subjectName].textContent;
         if (subjectName.includes("Zachowanie")) continue;
 
-        let gradesFirstList  = Grade.gradesTdToList(tds[tdsIndexes.gradesFirstTerm], plusValue, minusValue, tylkoLiczDoSredniej);
-        let gradesSecondList = Grade.gradesTdToList(tds[tdsIndexes.gradesSecondTerm], plusValue, minusValue, tylkoLiczDoSredniej);
+        let gradesFirstList  = Grade.gradesTdToList(tds[tdsIndexes.gradesFirstTerm], plusValue, minusValue, tylkoLiczDoSredniej, ignoreCorrectedGrades);
+        let gradesSecondList = Grade.gradesTdToList(tds[tdsIndexes.gradesSecondTerm], plusValue, minusValue, tylkoLiczDoSredniej, ignoreCorrectedGrades);
         let subjectObject = new Subject(subjectName, gradesFirstList, gradesSecondList);
         
         updateAverage(tds, subjectObject);
@@ -348,11 +354,13 @@ async function main() {
     let plusValue;
     let minusValue;
     let tylkoLiczDoSredniej;
+    let ignoreCorrectedGrades;
 
     await chrome.storage.sync.get(["plus"]).then((result) => {plusValue = result.plus ?? 0.5});
     await chrome.storage.sync.get(["minus"]).then((result) => {minusValue = result.minus ?? 0.25});
-    await chrome.storage.sync.get(["tylkoLiczDoSredniej"]).then((result) => {tylkoLiczDoSredniej = result.minus ?? true});
-    let subjectList = await generateSubjectListFromGradesTableBody(tbody, plusValue, minusValue, tylkoLiczDoSredniej);
+    await chrome.storage.sync.get(["tylkoLiczDoSredniej"]).then((result) => {tylkoLiczDoSredniej = result.tylkoLiczDoSredniej ?? true});
+    await chrome.storage.sync.get(["ignoreCorrectedGrades"]).then((result) => {ignoreCorrectedGrades = result.ignoreCorrectedGrades ?? true})
+    let subjectList = await generateSubjectListFromGradesTableBody(tbody, plusValue, minusValue, tylkoLiczDoSredniej, ignoreCorrectedGrades);
     let annuals = annualAssements(tbody);
     generateFooter(Utils.getTopLevelChildByTagName(table, "tfoot"), subjectList, annuals);
 };

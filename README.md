@@ -1,9 +1,13 @@
-# Librus-srednia
+![Chrome Web Store](https://img.shields.io/chrome-web-store/v/oggojknablgjgacijcjbioanonlkmfeg)
+![Chrome Web Store](https://img.shields.io/chrome-web-store/users/oggojknablgjgacijcjbioanonlkmfeg)
+# ![Logo](assets/icon/32.png) Librus-srednia
 Rozszerzenie do najpopularniejszych przeglądarek dodające możliwość wyświetlenia średniej z ocen, która nie zaśmieca strony.
+
+Wtyczka posiada ustawienia z możliwością konfigurowania każdej funkcji.
 
 | Przed  | Po |
 | ------------------------- | --------------------- |
-| ![przed](img/before.png)  | ![po](img/after.png)  |
+| ![przed](assets/img/before.png)  | ![po](assets/img/after.png)  |
 
 # Funkcje w wersji 2.0.X
 * Wyświetlanie średniej dla każdego przedmiotu w tabeli z ocenami.
@@ -23,25 +27,22 @@ Parametry liczenia można zmienić w ustawieniach wtyczki (wciskając ikonkę wt
 Wejdź w zakładkę `Issues` i utwórz nowy wątek.
 
 # Instalacja
-Code -> Download ZIP.
-## Opera
-1. Wejdź w Rozszerzenia -> Zarządzaj rozszerzeniami.
-2. Włącz tryb programisty w prawym górnym rogu.
-3. Wciśnij "Załaduj rozpakowane" i wybierz folder `extensions/combined/dist/chrome`, gdzie znajduje się rozpakowana wtyczka.
 
-## Chrome
-1. Wejdź w Rozszerzenia -> Zarządzaj rozszerzeniami.
-2. Włącz tryb dewelopera w prawym górnym rogu.
-3. Wciśnij "Załaduj rozpakowane" i wybierz folder `extensions/combined/dist/chrome`, gdzie znajduje się rozpakowana wtyczka.
+## [Chrome](https://chrome.google.com/webstore/detail/librus-średnia/oggojknablgjgacijcjbioanonlkmfeg)
+
+## [Opera (Przez chrome web store)](https://chrome.google.com/webstore/detail/librus-średnia/oggojknablgjgacijcjbioanonlkmfeg)
 
 ## Firefox
 Wtyczka w firefoxie **obecnie nie działa**.
 
-## Inne przeglądarki
-Na innych przeglądarkach działających na silniku Chrominium instalacja powinna być analogiczna.
+## Przeglądarki oparte na chrominium
+Jeśli się da to przez [chrome web store](https://chrome.google.com/webstore/detail/librus-średnia/oggojknablgjgacijcjbioanonlkmfeg)
 
-# Łee a czemu nie ma tego do pobrania w sklepach z rozszerzeniami?
-Bo chrome pobiera haracz, a opera wymaga zweryfikowania wtyczki i nie chce mi się przechodzić przez ten proces.
+### Instalacja ręczna
+Code -> Download ZIP.
+1. Wejdź w Rozszerzenia -> Zarządzaj rozszerzeniami.
+2. Włącz tryb dewelopera w prawym górnym rogu.
+3. Wciśnij "Załaduj rozpakowane" i wybierz folder `extensions/combined/dist/chrome`, gdzie znajduje się rozpakowana wtyczka.
 
 # Mogę wesprzeć projekt?
-Tak. Możesz pomóc go rozwijać lub możesz wesprzeć projekt finansowo (na przykład na opłacenie chromowego haraczu). Zerknij na link po prawej stronie pod napisem `Sponsor this project`.
+Tak. Możesz pomóc go rozwijać lub możesz wesprzeć projekt finansowo. Zerknij na link po prawej stronie pod napisem `Sponsor this project`.
