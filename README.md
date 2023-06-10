@@ -1,5 +1,5 @@
-![Chrome Web Store](https://img.shields.io/chrome-web-store/v/oggojknablgjgacijcjbioanonlkmfeg)
-![Chrome Web Store](https://img.shields.io/chrome-web-store/users/oggojknablgjgacijcjbioanonlkmfeg)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/oggojknablgjgacijcjbioanonlkmfeg)](https://chrome.google.com/webstore/detail/librus-średnia/oggojknablgjgacijcjbioanonlkmfeg)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/users/oggojknablgjgacijcjbioanonlkmfeg)](https://chrome.google.com/webstore/detail/librus-średnia/oggojknablgjgacijcjbioanonlkmfeg)
 # ![Logo](assets/icon/32.png) Librus-srednia
 Rozszerzenie do najpopularniejszych przeglądarek dodające możliwość wyświetlenia średniej z ocen, która nie zaśmieca strony.
 
