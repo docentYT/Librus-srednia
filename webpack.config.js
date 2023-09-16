@@ -3,7 +3,7 @@ const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
 const FileManagerPlugin = require("filemanager-webpack-plugin");
 
-const entries = ["przegladaj_oceny.content-script", "utils"];
+const entries = ["przegladaj_oceny.content-script", "przegladaj_plan_lekcji.inject-script", "utils", "background"];
 
 const ignorePatterns = [
     "**/manifest-**",
