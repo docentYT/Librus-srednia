@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     let tylkoLiczDoSredniej = document.getElementById("tylkoLiczDoSredniej");
     let schowajZachowanie = document.getElementById("schowajZachowanie");
     let ignoreCorrectedGrades = document.getElementById("ignoreCorrectedGrades");
+    let nextWeekAtWeekend = document.getElementById("nextWeekAtWeekend");
     let submitButton = document.getElementById("submit");
     
     chrome.storage.sync.get(["plus"]).then((result) => {plusInput.value = result.plus ?? 0.5});
@@ -11,15 +12,16 @@ document.addEventListener("DOMContentLoaded", async function() {
     chrome.storage.sync.get(["tylkoLiczDoSredniej"]).then((result) => {tylkoLiczDoSredniej.checked = result.tylkoLiczDoSredniej ?? true});
     chrome.storage.sync.get(["schowajZachowanie"]).then((result) => {schowajZachowanie.checked = result.schowajZachowanie ?? true});
     chrome.storage.sync.get(["ignoreCorrectedGrades"]).then((result) => {ignoreCorrectedGrades.checked = result.ignoreCorrectedGrades ?? true});
+    chrome.storage.sync.get(["nextWeekAtWeekend"]).then((result) => {nextWeekAtWeekend.checked = result.nextWeekAtWeekend ?? true});
     submitButton.addEventListener("click", onClickEvent);
 
 
     function onClickEvent() {
-        saveData(plusInput.value, minusInput.value, tylkoLiczDoSredniej.checked, schowajZachowanie.checked, ignoreCorrectedGrades.checked);
+        saveData(plusInput.value, minusInput.value, tylkoLiczDoSredniej.checked, schowajZachowanie.checked, ignoreCorrectedGrades.checked, nextWeekAtWeekend.checked);
     };
 });
 
-function saveData(plusValue, minusValue, tylkoLiczDoSredniejValue, schowajZachowanieValue, ignoreCorrectedGradesValue) {
+function saveData(plusValue, minusValue, tylkoLiczDoSredniejValue, schowajZachowanieValue, ignoreCorrectedGradesValue, nextWeekAtWeekendValue) {
     plusValue = parseFloat(plusValue);
     minusValue = parseFloat(minusValue);
 
@@ -29,6 +31,7 @@ function saveData(plusValue, minusValue, tylkoLiczDoSredniejValue, schowajZachow
             minus: minusValue,
             tylkoLiczDoSredniej: tylkoLiczDoSredniejValue,
             schowajZachowanie: schowajZachowanieValue,
-            ignoreCorrectedGrades: ignoreCorrectedGradesValue
+            ignoreCorrectedGrades: ignoreCorrectedGradesValue,
+            nextWeekAtWeekend: nextWeekAtWeekendValue
         });
 };

@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Librus Średnia",
-    "version": "2.0.0",
+    "version": "3.0.0",
     "description": "Wtyczka wyświetlająca średnią ocen dla każdego przedmiotu, mimo że ta funkcja została wyłączona przez administratora szkoły.",
     "author": "Krzysztof Kwiatkowski",
     "icons": {
@@ -12,10 +12,18 @@
       },
 
     "permissions": [
-        "storage"
+        "storage",
+        "webNavigation",
+        "scripting"
+    ],
+    "host_permissions": [
+        "*://synergia.librus.pl/przegladaj_plan_lekcji"
     ],
     "action": {
         "default_popup": "popup.html"
+    },
+    "background": {
+        "service_worker": "background.js"
     },
     "content_scripts": [
         {

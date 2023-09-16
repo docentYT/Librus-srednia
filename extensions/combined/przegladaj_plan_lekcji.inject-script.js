@@ -1,0 +1,1 @@
+import "./src/przegladaj_plan_lekcji/nextWeekAtWeekend"
