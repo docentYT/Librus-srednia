@@ -40,10 +40,12 @@ Wtyczka w firefoxie **obecnie nie działa**.
 Jeśli się da to przez [chrome web store](https://chrome.google.com/webstore/detail/librus-średnia/oggojknablgjgacijcjbioanonlkmfeg)
 
 ### Instalacja ręczna
-Code -> Download ZIP.
-1. Wejdź w Rozszerzenia -> Zarządzaj rozszerzeniami.
-2. Włącz tryb dewelopera w prawym górnym rogu.
-3. Wciśnij "Załaduj rozpakowane" i wybierz folder `extensions/combined/dist/chrome`, gdzie znajduje się rozpakowana wtyczka.
+1. Sklonuj repozytorium.
+2. Uruchom w konsoli polecenie `npm install` (wymagane Node.js v18 i npm (testowane na 9.8)).
+3. Uruchom w konsoli polecenie `npm run dev`.
+4. W Twojej przeglądarce wejdź w Rozszerzenia -> Zarządzaj rozszerzeniami.
+5. Włącz tryb dewelopera.
+6. Wciśnij "Załaduj rozpakowane" i wybierz folder `extensions/combined/dist/chrome`, gdzie znajduje się rozpakowana wtyczka.
 
 # Mogę wesprzeć projekt?
 Tak. Możesz pomóc go rozwijać lub możesz wesprzeć projekt finansowo. Zerknij na link po prawej stronie pod napisem `Sponsor this project`.
