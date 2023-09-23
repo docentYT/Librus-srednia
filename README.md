@@ -41,7 +41,7 @@ Jeśli się da to przez [chrome web store](https://chrome.google.com/webstore/de
 
 ### Instalacja ręczna
 1. Sklonuj repozytorium.
-2. Uruchom w konsoli polecenie `npm install` (wymagane Node.js v18 i npm (testowane na 9.8)).
+2. Uruchom w konsoli polecenie `npm install` (wymagane Node.js v18 i npm (testowane na 9.8)). Można użyć `dev container`.
 3. Uruchom w konsoli polecenie `npm run dev`.
 4. W Twojej przeglądarce wejdź w Rozszerzenia -> Zarządzaj rozszerzeniami.
 5. Włącz tryb dewelopera.
