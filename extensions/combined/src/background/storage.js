@@ -8,9 +8,9 @@ let storage = (function () {
         schowajZachowanie: true,
         ignoreCorrectedGrades: true,
         nextWeekAtWeekend: true
-    }
+    };
 
-    let cache = {}
+    let cache = {};
 
     function checkSettingsObject(settingsObject) {
         if (Object.keys(settingsObject).length != Object.keys(corrrectSettingsObject).length) {
