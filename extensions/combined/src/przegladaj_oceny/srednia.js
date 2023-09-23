@@ -1,10 +1,8 @@
 "use strict";
 const Grade = require("./Grade");
-const Subject = require("./Subject");
-const Utils = require("../../utils");
-const GenerateTdsIndexes = require("./generateTdsIndexes");
-
-var tdsIndexes;
+import Subject from "./Subject";
+import { getTopLevelChildByTagName } from "../../utils";
+import { generateTdsIndexes } from "./generateTdsIndexes";
 
 function average(gradesList) {
     let sum = 0;
@@ -19,7 +17,7 @@ function average(gradesList) {
     return (sum/counter).toFixed(2);
 };
 
-function generateFooter(tfoot, subjects, annuals) {
+function generateFooter(tfoot, tdsIndexes, subjects, annuals) {
     function generateTd(innerText, title) {
         let td = document.createElement("td");
         td.setAttribute("colspan", 1);
@@ -27,70 +25,70 @@ function generateFooter(tfoot, subjects, annuals) {
         td.innerText = innerText || null;
         tr.appendChild(td);
     }
-    var tr = Utils.getTopLevelChildByTagName(tfoot, "tr");
-    Utils.getTopLevelChildByTagName(tr, "td").remove();
+    let tr = getTopLevelChildByTagName(tfoot, "tr");
+    getTopLevelChildByTagName(tr, "td").remove();
 
     const {gradesFirst, gradesSecond} = Grade.gradesFromSubjects(subjects);
 
     generateTd(); // Spacing
     generateTd("Średnie", "Średnie wyliczone dzięki wtyczce Librus Średnia wykonanej przez https://docentcompany.com");
 
-    if (tdsIndexes.hasOwnProperty("gradesFirstTerm"))       generateTd();
-    if (tdsIndexes.hasOwnProperty("averageFirstTerm"))      generateTd(average(gradesFirst), "Średnia ocen z pierwszego semestu ze wszystkich przedmiotów.");
-    if (tdsIndexes.hasOwnProperty("annualFirstPredirect"))  generateTd(annuals["annualFirstPredirect"], "Średnia ocen przewidywanych na pierwszy semestr.");
-    if (tdsIndexes.hasOwnProperty("annualFirst"))           generateTd(annuals["annualFirst"], "Średnia ocen śródrocznych na pierwszy semestr.");
+    if (tdsIndexes.get("gradesFirstTerm"))       generateTd();
+    if (tdsIndexes.get("averageFirstTerm"))      generateTd(average(gradesFirst), "Średnia ocen z pierwszego semestu ze wszystkich przedmiotów.");
+    if (tdsIndexes.get("annualFirstPredirect"))  generateTd(annuals["annualFirstPredirect"], "Średnia ocen przewidywanych na pierwszy semestr.");
+    if (tdsIndexes.get("annualFirst"))           generateTd(annuals["annualFirst"], "Średnia ocen śródrocznych na pierwszy semestr.");
 
-    if (tdsIndexes.hasOwnProperty("gradesSecondTerm"))      generateTd();
-    if (tdsIndexes.hasOwnProperty("averageSecondTerm"))     generateTd(average(gradesSecond), "Średnia ocen z drugiego semestu ze wszystkich przedmiotów.");
-    if (tdsIndexes.hasOwnProperty("annualSecondPredirect")) generateTd(annuals["annualSecondPredirect"], "Średnia ocen przewidywanych na drugi semestr.");
-    if (tdsIndexes.hasOwnProperty("annualSecond"))          generateTd(annuals["annualSecond"], "Średnia ocen śródrocznych na drugi semestr.");
+    if (tdsIndexes.get("gradesSecondTerm"))      generateTd();
+    if (tdsIndexes.get("averageSecondTerm"))     generateTd(average(gradesSecond), "Średnia ocen z drugiego semestu ze wszystkich przedmiotów.");
+    if (tdsIndexes.get("annualSecondPredirect")) generateTd(annuals["annualSecondPredirect"], "Średnia ocen przewidywanych na drugi semestr.");
+    if (tdsIndexes.get("annualSecond"))          generateTd(annuals["annualSecond"], "Średnia ocen śródrocznych na drugi semestr.");
 
-    if (tdsIndexes.hasOwnProperty("averageYear"))           generateTd(average(gradesFirst.concat(gradesSecond)), "Średnia ocen z pierwszego i drugiego semestu łącznie ze wszystkich przedmiotów.");
-    if (tdsIndexes.hasOwnProperty("annualYearPredirect"))   generateTd(annuals["annualYearPredirect"], "Średnia ocen przewidywanych na koniec roku.");
-    if (tdsIndexes.hasOwnProperty("annualYear"))            generateTd(annuals["annualYear"], "Średnia ocen rocznych.");
+    if (tdsIndexes.get("averageYear"))           generateTd(average(gradesFirst.concat(gradesSecond)), "Średnia ocen z pierwszego i drugiego semestu łącznie ze wszystkich przedmiotów.");
+    if (tdsIndexes.get("annualYearPredirect"))   generateTd(annuals["annualYearPredirect"], "Średnia ocen przewidywanych na koniec roku.");
+    if (tdsIndexes.get("annualYear"))            generateTd(annuals["annualYear"], "Średnia ocen rocznych.");
 };
 
-function updateAverage(tds, subject) {
-    function updadeAverageForAnnual(tdsIndexKey, grades, title) {
-        if (!tdsIndexes.hasOwnProperty(tdsIndexKey)) return;
-        const td = tds[tdsIndexes[tdsIndexKey]];
-        td.textContent = average(grades);
+function updateAverage(tds, tdsIndexes, subject) {
+    function updadeAverageForAnnual(tdsIndexKey, average, title) {
+        if (!tdsIndexes.get(tdsIndexKey)) return;
+        let td = tds[tdsIndexes.get(tdsIndexKey)];
+        td.textContent = average;
         td.setAttribute("title", title);
         td.setAttribute("class", "center");
     }
-    updadeAverageForAnnual("averageFirstTerm", subject.gradesFirst, "Średnia ocen z pierwszego semestu z jednego przedmiotu.");
-    updadeAverageForAnnual("averageSecondTerm", subject.gradesSecond, "Średnia ocen z drugiego semestu z jednego przedmiotu.");
-    updadeAverageForAnnual("averageYear", subject.gradesFirst.concat(subject.gradesSecond), "Średnia ocen z pierwszego i drugiego semesteru łącznie z jednego przedmiotu.");
+    updadeAverageForAnnual("averageFirstTerm", subject.averageFirstTerm, "Średnia ocen z pierwszego semestu z jednego przedmiotu.");
+    updadeAverageForAnnual("averageSecondTerm", subject.averageSecondTerm, "Średnia ocen z drugiego semestu z jednego przedmiotu.");
+    updadeAverageForAnnual("averageYear", subject.averageYear, "Średnia ocen z pierwszego i drugiego semesteru łącznie z jednego przedmiotu.");
 };
 
-function generateSubjectListFromGradesTableBody(tbody, plusValue, minusValue, tylkoLiczDoSredniej, ignoreCorrectedGrades) {
+function generateSubjectListFromGradesTableBody(tbody, tdsIndexes, plusValue, minusValue, tylkoLiczDoSredniej, ignoreCorrectedGrades) {
     let subjectList = [];
     for (const subject of tbody.children) {
-        if (subject.hasAttribute("name")) continue;
-        let tds = subject.getElementsByTagName("td");
-        let subjectName = tds[tdsIndexes.subjectName].textContent;
+        if (subject.hasAttribute("name")) continue; // if it has name it is a table that can be expanded by clicking '+' icon.
+        const tds = subject.getElementsByTagName("td");
+        const subjectName = tds[tdsIndexes.get("subjectName")].textContent;
         if (subjectName.includes("Zachowanie")) continue;
 
-        let gradesFirstList  = Grade.gradesTdToList(tds[tdsIndexes.gradesFirstTerm], plusValue, minusValue, tylkoLiczDoSredniej, ignoreCorrectedGrades);
-        let gradesSecondList = Grade.gradesTdToList(tds[tdsIndexes.gradesSecondTerm], plusValue, minusValue, tylkoLiczDoSredniej, ignoreCorrectedGrades);
-        let subjectObject = new Subject(subjectName, gradesFirstList, gradesSecondList);
+        const gradesFirstList  = Grade.gradesTdToList(tds[tdsIndexes.get("gradesFirstTerm")], plusValue, minusValue, tylkoLiczDoSredniej, ignoreCorrectedGrades);
+        const gradesSecondList = Grade.gradesTdToList(tds[tdsIndexes.get("gradesSecondTerm")], plusValue, minusValue, tylkoLiczDoSredniej, ignoreCorrectedGrades);
+        const subjectObject = new Subject(subjectName, gradesFirstList, gradesSecondList);
         
-        updateAverage(tds, subjectObject);
+        updateAverage(tds, tdsIndexes, subjectObject);
         
         subjectList.push(new Subject(subjectName, gradesFirstList, gradesSecondList));
     };
     return subjectList;
 };
 
-function annualAssements(tbody) {
+function annualAssements(tbody, tdsIndexes) {
     let annuals = {};
 
     function parseAnnual(tds, tdsIndex) {
         let grade = tds[tdsIndex];
         if (!grade) return null;
-        grade = Utils.getTopLevelChildByTagName(grade, "span");
+        grade = getTopLevelChildByTagName(grade, "span");
         if (!grade) return null;
-        grade = Utils.getTopLevelChildByTagName(grade, "a");
+        grade = getTopLevelChildByTagName(grade, "a");
         if (!grade || !grade.textContent) return null;
         return parseInt(grade.textContent);
     }
@@ -110,7 +108,7 @@ function annualAssements(tbody) {
     for (const subject of tbody.children) {
         if (subject.hasAttribute("name")) continue;
         let tds = subject.getElementsByTagName("td");
-        let subjectName = tds[tdsIndexes.subjectName].textContent;
+        let subjectName = tds[tdsIndexes.get("subjectName")].textContent;
         if (subjectName.includes("Zachowanie")) continue;
 
         let annualFirstPredirectGrade = parseAnnual(tds, tdsIndexes.annualFirstPredirect);
@@ -160,23 +158,19 @@ function annualAssements(tbody) {
 }
 
 async function main() {
-    let table = document.getElementsByClassName("decorated stretch")[1];
-    let tbody = Utils.getTopLevelChildByTagName(table, "tbody");
+    const table = document.getElementsByClassName("decorated stretch")[1];
+    const tbody = getTopLevelChildByTagName(table, "tbody");
 
-    tdsIndexes = GenerateTdsIndexes.generateTdsIndexes(table);
+    const tdsIndexes = generateTdsIndexes(table);
 
-    let plusValue;
-    let minusValue;
-    let tylkoLiczDoSredniej;
-    let ignoreCorrectedGrades;
+    const plusValue = await chrome.runtime.sendMessage({ "message": "getSetting", "key": "plus" });
+    const minusValue = await chrome.runtime.sendMessage({ "message": "getSetting", "key": "minus" });
+    const tylkoLiczDoSredniej = await chrome.runtime.sendMessage({ "message": "getSetting", "key": "tylkoLiczDoSredniej" });
+    const ignoreCorrectedGrades = await chrome.runtime.sendMessage({ "message": "getSetting", "key": "ignoreCorrectedGrades" });
 
-    await chrome.storage.sync.get(["plus"]).then((result) => {plusValue = result.plus ?? 0.5});
-    await chrome.storage.sync.get(["minus"]).then((result) => {minusValue = result.minus ?? 0.25});
-    await chrome.storage.sync.get(["tylkoLiczDoSredniej"]).then((result) => {tylkoLiczDoSredniej = result.tylkoLiczDoSredniej ?? true});
-    await chrome.storage.sync.get(["ignoreCorrectedGrades"]).then((result) => {ignoreCorrectedGrades = result.ignoreCorrectedGrades ?? true})
-    let subjectList = await generateSubjectListFromGradesTableBody(tbody, plusValue, minusValue, tylkoLiczDoSredniej, ignoreCorrectedGrades);
-    let annuals = annualAssements(tbody);
-    generateFooter(Utils.getTopLevelChildByTagName(table, "tfoot"), subjectList, annuals);
+    let subjectList = generateSubjectListFromGradesTableBody(tbody, tdsIndexes, plusValue, minusValue, tylkoLiczDoSredniej, ignoreCorrectedGrades);
+    let annuals = annualAssements(tbody, tdsIndexes);
+    generateFooter(getTopLevelChildByTagName(table, "tfoot"), tdsIndexes, subjectList, annuals);
 };
 
 main();

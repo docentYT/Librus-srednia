@@ -1,3 +1,4 @@
+"use strict";
 class Grade {
     constructor(value, weight, countToAverage) {
         this.value = value;
@@ -8,7 +9,7 @@ class Grade {
 
 function parseGradeFromHtmlObject(html, plusValue, minusValue, tylkoLiczDoSredniej) {
     function parseWeight(text) {
-        weight = parseInt(text[6]);
+        const weight = parseInt(text[6]);
         if (isNaN(weight)) return 1;
         return weight;
     };
@@ -19,19 +20,21 @@ function parseGradeFromHtmlObject(html, plusValue, minusValue, tylkoLiczDoSredni
     };
 
     function parseValue(text, plusValue, minusValue) {
-        value = parseInt(text);
+        let value = parseInt(text[0]);
         if (isNaN(value)) return text;
-        if      (text[1] == '+') value += plusValue;  // grade with '+'
-        else if (text[1] == '-') value -= minusValue; // grade with '-'
+        if (text.length == 2) {
+            if      (text[1] == '+') value += plusValue;  // grade with '+'
+            else if (text[1] == '-') value -= minusValue; // grade with '-'
+        }
         return value;
     };
 
-    title = html.getAttribute("title");
-    titleArray = title.split("<br>");
+    const title = html.getAttribute("title");
+    const titleArray = title.split("<br>");
     
-    value = parseValue(html.innerText, plusValue, minusValue);
-    weight = 1;
-    countToAverage = false;
+    const value = parseValue(html.innerText, plusValue, minusValue);
+    let weight = 1;
+    let countToAverage = false;
     for (const text of titleArray) {
         if      (text.includes("Waga: "))               weight          = parseWeight(text);
         else if (text.includes("Licz do średniej:"))    countToAverage  = parseCountToAverage(text, tylkoLiczDoSredniej);
@@ -41,13 +44,15 @@ function parseGradeFromHtmlObject(html, plusValue, minusValue, tylkoLiczDoSredni
 
 
 function gradesTdToList(gradesTd, plusValue, minusValue, tylkoLiczDoSredniej, ignoreCorrectedGrades) {
-    list = [];
+    let list = [];
 
-    let grades = gradesTd.children;
+    const grades = gradesTd.children;
     for (const gradeGroup of grades) {
         const gradesInGradeGroup = gradeGroup.children;
         if (gradesInGradeGroup[0].tagName == "SPAN") {
-            if (ignoreCorrectedGrades) list.push(parseGradeFromHtmlObject(gradesInGradeGroup[gradesInGradeGroup.length-1].getElementsByTagName("a")[0]));
+            if (ignoreCorrectedGrades) {
+                list.push(parseGradeFromHtmlObject(gradesInGradeGroup[gradesInGradeGroup.length-1].getElementsByTagName("a")[0], plusValue, minusValue, tylkoLiczDoSredniej));
+            }
             else {
                 for (const grade of gradesInGradeGroup) {
                     list.push(parseGradeFromHtmlObject(grade.getElementsByTagName("a")[0], plusValue, minusValue, tylkoLiczDoSredniej));
