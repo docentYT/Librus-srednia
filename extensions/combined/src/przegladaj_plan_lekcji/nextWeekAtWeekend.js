@@ -1,6 +1,5 @@
 function main() {
     let planLekcji = document.getElementsByClassName("plan-lekcji")[0];
-    console.log(planLekcji)
     let headers = planLekcji.getElementsByTagName("thead")[0].getElementsByTagName("tr")[0];
     
     let saturdayString = headers.childNodes[headers.childNodes.length-3].lastChild.textContent;
