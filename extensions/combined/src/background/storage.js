@@ -1,6 +1,7 @@
 "use strict";
 // https://stackoverflow.com/questions/1479319/simplest-cleanest-way-to-implement-a-singleton-in-javascript
 let storage = (function () {
+    // Private methods
     const corrrectSettingsObject = {
         plus: 0.5,
         minus: 0.25,
@@ -9,12 +10,14 @@ let storage = (function () {
         ignoreCorrectedGrades: true,
         nextWeekAtWeekend: true
     };
+    const correctSettingsObjectLength = Object.keys(corrrectSettingsObject).length;
 
     let cache = {};
 
     function checkSettingsObject(settingsObject) {
-        if (Object.keys(settingsObject).length != Object.keys(corrrectSettingsObject).length) {
-            throw new Error(`Settings object length is ${Object.keys(settingsObject).length}. Expected ${Object.keys(corrrectSettingsObject).length}`)
+        let settingsObjectLength = Object.keys(settingsObject).length; 
+        if (settingsObjectLength != correctSettingsObjectLength) {
+            throw new Error(`Settings object length is ${settingsObjectLength}. Expected ${correctSettingsObjectLength}`)
         }
 
         Object.keys(corrrectSettingsObject).forEach((property) => {
@@ -26,6 +29,7 @@ let storage = (function () {
         return true;
     }
 
+    // Public methods
     return {
         save: function (settingsObject) {
             if (checkSettingsObject(settingsObject)) {
