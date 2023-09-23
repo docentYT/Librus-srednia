@@ -1,6 +1,6 @@
 function main() {
-    let planLekcji = document.getElementsByClassName("plan-lekcji")[0];
-    let headers = planLekcji.getElementsByTagName("thead")[0].getElementsByTagName("tr")[0];
+    let timetable = document.getElementsByClassName("plan-lekcji")[0];
+    let headers = timetable.getElementsByTagName("thead")[0].getElementsByTagName("tr")[0];
     
     let saturdayString = headers.childNodes[headers.childNodes.length-3].lastChild.textContent;
     let saturday = new Date(saturdayString).setHours(0,0,0,0);
