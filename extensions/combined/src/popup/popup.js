@@ -1,12 +1,12 @@
 "use strict";
 document.addEventListener("DOMContentLoaded", async function () {
-    let plusInput = document.getElementById("plus");
-    let minusInput = document.getElementById("minus");
-    let tylkoLiczDoSredniej = document.getElementById("tylkoLiczDoSredniej");
-    let schowajZachowanie = document.getElementById("schowajZachowanie");
-    let ignoreCorrectedGrades = document.getElementById("ignoreCorrectedGrades");
-    let nextWeekAtWeekend = document.getElementById("nextWeekAtWeekend");
-    let submitButton = document.getElementById("submit");
+    const plusInput = document.getElementById("plus");
+    const minusInput = document.getElementById("minus");
+    const tylkoLiczDoSredniej = document.getElementById("tylkoLiczDoSredniej");
+    const schowajZachowanie = document.getElementById("schowajZachowanie");
+    const ignoreCorrectedGrades = document.getElementById("ignoreCorrectedGrades");
+    const nextWeekAtWeekend = document.getElementById("nextWeekAtWeekend");
+    const submitButton = document.getElementById("submit");
 
     plusInput.value = await getData("plus");
     minusInput.value = await getData("minus");
