@@ -50,11 +50,6 @@ input[type=checkbox] {
     cursor: pointer;
 }
 
-
-input[type=checkbox]:checked:before {
-	color: black !important;
-}
-
 /* unvisited and visited link */
 a:link, a:visited {
     color: #a4c800;
