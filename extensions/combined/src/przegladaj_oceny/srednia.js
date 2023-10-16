@@ -1,21 +1,8 @@
 "use strict";
 const Grade = require("./Grade");
-import Subject from "./Subject";
-import { getTopLevelChildByTagName } from "../../utils";
+import {Subject} from "./Subject";
+import { getTopLevelChildByTagName, average } from "../../utils";
 import { generateTdsIndexes } from "./generateTdsIndexes";
-
-function average(gradesList) {
-    let sum = 0;
-    let counter = 0;
-    if (gradesList.length == 0) return (0).toFixed(2);
-    for (const grade of gradesList) {
-        if (grade.countToAverage && !isNaN(grade.value)) {
-            sum += (grade.value * grade.weight);
-            counter += grade.weight;
-        }
-    }
-    return (sum/counter).toFixed(2);
-};
 
 function generateFooter(tfoot, tdsIndexes, subjects, annuals) {
     function generateTd(innerText, title) {
