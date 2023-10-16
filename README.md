@@ -1,5 +1,3 @@
-[![Chrome Web Store](https://img.shields.io/chrome-web-store/users/oggojknablgjgacijcjbioanonlkmfeg)](https://chrome.google.com/webstore/detail/librus-średnia/oggojknablgjgacijcjbioanonlkmfeg)
-
 <h1 align="center"><img src='assets/icon/128.png' width='32'/> Librus średnia</h1>
 
 <p align="center">

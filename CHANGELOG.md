@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Settings UI.
 - Many functions were rewritten from scratch.
+- Readme file.
 
 ### Removed
 
