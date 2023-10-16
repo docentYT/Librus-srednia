@@ -18,6 +18,7 @@ function average(gradesList) {
             counter += grade.weight;
         }
     }
+    if (counter == 0) return (0).toFixed(2);
     return (sum/counter).toFixed(2);
 };
 
