@@ -1,40 +1,38 @@
 "use strict";
-const Utils = require("../../utils");
+import {getTopLevelChildByTagName} from "../../utils"
 
 var wasGrades = false;
 function grades() {
     if (wasGrades) return "gradesSecondTerm";
     wasGrades = true;
     return "gradesFirstTerm";
-} 
-const mapColumnHeadersToTdsIndexes = {
-    "Oceny bieżące": grades,
-    "Śr.I": "averageFirstTerm",
-    "(I)": "annualFirstPredirect",
-    "I": "annualFirst",
-    "Śr.II": "averageSecondTerm",
-    "(II)": "annualSecondPredirect",
-    "II": "annualSecond",
-    "Śr.R": "averageYear",
-    "(R)": "annualYearPredirect",
-    "R": "annualYear"
 }
 
-export function generateTdsIndexes(table) {
-    let tdsIndexes = {"subjectName": 1};
+const mapColumnHeadersToTdsIndexes = new Map([
+    ["Oceny bieżące", grades],
+    ["Śr.I", "averageFirstTerm"],
+    ["(I)", "annualFirstPredirect"],
+    ["I", "annualFirst"],
+    ["Śr.II", "averageSecondTerm"],
+    ["(II)", "annualSecondPredirect"],
+    ["II", "annualSecond"],
+    ["Śr.R", "averageYear"],
+    ["(R)", "annualYearPredirect"],
+    ["R", "annualYear"]
+])
 
-    let tableHead = Utils.getTopLevelChildByTagName(table, "thead");
-    let rowWithDescriptions = tableHead.children[1]; // Second row with column descriptions: "oceny bieżące", "Śr. I" etc.
+export function generateTdsIndexes(table) {
+    let tdsIndexes = new Map([["subjectName", 1]]);
+
+    const tableHead = getTopLevelChildByTagName(table, "thead");
+    const rowWithDescriptions = tableHead.children[1]; // Second row with column descriptions: "oceny bieżące", "Śr. I" etc.
     let array = Array.from(rowWithDescriptions.children);
 
     let counter = 2;
     for (const column of array) {
-        let mappedKey = mapColumnHeadersToTdsIndexes[column.innerText];
-        if (typeof mappedKey === "function") {
-            tdsIndexes[mappedKey()] = counter;
-        } else {
-            tdsIndexes[mappedKey] = counter;
-        }
+        const mappedKey = mapColumnHeadersToTdsIndexes.get(column.innerText);
+        const key = typeof mappedKey === "function" ? mappedKey() : mappedKey;
+        tdsIndexes.set(key, counter);
         counter++;
     }
 
