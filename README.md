@@ -45,7 +45,7 @@ Parametry liczenia można zmienić w ustawieniach wtyczki (wciskając ikonkę wt
 Wtyczka w firefoxie **obecnie nie działa**.
 
 ### Przeglądarki oparte na chrominium
-Jeśli się da to przez [chrome web store](https://chrome.google.com/webstore/detail/librus-średnia/oggojknablgjgacijcjbioanonlkmfeg)
+Jeśli się da to przez [chrome web store](https://chrome.google.com/webstore/detail/librus-średnia/oggojknablgjgacijcjbioanonlkmfeg).
 
 ### Instalacja ręczna
 1. Sklonuj repozytorium.
