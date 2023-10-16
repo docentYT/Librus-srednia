@@ -29,7 +29,7 @@
 * Synchronizowanie ustawień między przeglądarkami, gdy użytkownik jest do niej zalogowany (jeśli przeglądarka wspiera synchronizację).
 * Automatyczne przełączanie planu lekcji na najbliższy tydzień w weekend po otwarciu go.
 
-Wtyczka posiada ustawienia z możliwością konfigurowania każdej funkcji.
+**Wtyczka posiada ustawienia z możliwością konfigurowania każdej funkcji.**
 
 ## 🧮 Sposób liczenia średniej
 Do średniej domyślnie liczą się tylko oceny oznaczone `Licz do średniej: tak`. Pod uwagę jest brana waga. Domyślnie `+` dodaje 0.5 do wartości oceny, a `-` odejmuje 0.25. Oceny niezawierające *normalnej* liczby nie są brane pod uwagę.
