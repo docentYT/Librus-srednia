@@ -91,7 +91,7 @@ function annualAverages(tbody, tdsIndexes) {
     }
 
     function parseAnnual(tds, annualAndTdsKey) {
-        const grade = getAnnualGrade(tds, tdsIndexes[annualAndTdsKey]);
+        const grade = getAnnualGrade(tds, tdsIndexes.get(annualAndTdsKey)); 
         if (grade) {
             annualsTemp[annualAndTdsKey][0] += grade;
             annualsTemp[annualAndTdsKey][1]++;
