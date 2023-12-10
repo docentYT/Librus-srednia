@@ -1,5 +1,5 @@
 "use strict";
-import Storage from "./Storage";
+import storage from "./storage";
 
 const filter = {
     url: [
@@ -11,7 +11,7 @@ const filter = {
 };
 
 chrome.webNavigation.onCreatedNavigationTarget.addListener(async (details) => {
-    if (!await Storage.get("nextWeekAtWeekend")) return;
+    if (!await storage.get("nextWeekAtWeekend")) return;
     chrome.scripting.executeScript({
         target: { tabId: details.tabId },
         files: ["przegladaj_plan_lekcji.inject-script.js"],

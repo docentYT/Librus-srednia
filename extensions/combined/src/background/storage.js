@@ -1,6 +1,6 @@
 "use strict";
 // https://stackoverflow.com/questions/1479319/simplest-cleanest-way-to-implement-a-singleton-in-javascript
-let Storage = (function () {
+let storage = (function () {
     // Private methods
     const corrrectSettingsObject = {
         plus: 0.5,
@@ -51,6 +51,6 @@ let Storage = (function () {
     }
 })
 
-Object.freeze(Storage);
+Object.freeze(storage);
 
-module.exports = Storage();
+module.exports = storage();
